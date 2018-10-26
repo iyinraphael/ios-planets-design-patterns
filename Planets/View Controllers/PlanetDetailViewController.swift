@@ -16,6 +16,21 @@ class PlanetDetailViewController: UIViewController {
         updateViews()
     }
     
+    override func encodeRestorableState(with coder: NSCoder) {
+        let planetData = try? PropertyListEncoder().encode(planet)
+        
+        coder.encode(planetData, forKey: "PlanerData")
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        guard let planeData = coder.decodeObject(forKey: "PlanetData") as? Data else {return}
+        
+        let planet = try? PropertyListDecoder().decode(Planet.self, from: planeData)
+        
+        self.planet = planet
+    }
+    
     private func updateViews() {
         guard let planet = planet, isViewLoaded else {
             imageView?.image = nil

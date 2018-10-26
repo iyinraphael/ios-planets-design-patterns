@@ -18,6 +18,7 @@ class SettingsViewController: UIViewController {
     @IBAction func changeShouldShowPluto(_ sender: UISwitch) {
         let userDefaults = UserDefaults.standard
         userDefaults.set(sender.isOn, forKey: .shouldShowPlutoKey)
+        NotificationCenter.default.post(name: .didUpdatePluto, object: nil)
     }
     
     private func updateViews() {
@@ -26,4 +27,8 @@ class SettingsViewController: UIViewController {
     }
     
     @IBOutlet weak var shouldShowPlutoSwitch: UISwitch!
+}
+
+extension Notification.Name {
+    static let didUpdatePluto = Notification.Name(rawValue: "DidUpdatePluto")
 }
